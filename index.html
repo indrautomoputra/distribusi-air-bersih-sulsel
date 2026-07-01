@@ -16,14 +16,22 @@
   <style>
     :root {
       --red: #D52B1E;
+      --red-dark: #B01A10;
       --navy: #00205B;
+      --navy-light: #003380;
       --black: #1A1A1A;
       --white: #FFFFFF;
-      --gray-100: #F5F5F5;
-      --gray-200: #E5E5E5;
+      --gray-50: #FAFAFA;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-400: #9CA3AF;
       --gray-600: #6B7280;
+      --gray-800: #374151;
       --font-heading: 'Montserrat', sans-serif;
       --font-body: 'Open Sans', Arial, sans-serif;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: var(--font-body); color: var(--black); }
@@ -34,55 +42,182 @@
       text-transform: none;
       letter-spacing: normal;
     }
-    .reveal h1 { font-size: 2.8em; font-weight: 800; }
-    .reveal h2 { font-size: 2em; font-weight: 700; color: var(--navy); }
+    .reveal h1 {
+      font-size: 3em;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .reveal h2 {
+      font-size: 2.2em;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+      position: relative;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .reveal h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--red);
+      border-radius: 2px;
+    }
     .reveal h3 { font-size: 1.4em; font-weight: 600; }
     .reveal h4 { font-size: 1.1em; font-weight: 600; }
-    .reveal p, .reveal li { font-size: 0.9em; line-height: 1.6; }
+    .reveal p, .reveal li { font-size: 0.9em; line-height: 1.7; }
     .reveal table { font-size: 0.75em; }
-    .reveal table th { background: var(--navy); color: var(--white); padding: 8px 12px; }
-    .reveal table td { padding: 6px 12px; border: 1px solid var(--gray-200); }
-    .reveal table tr:nth-child(even) { background: var(--gray-100); }
 
     .reveal .controls { color: var(--navy); }
-    .reveal .progress { background: var(--gray-200); }
+    .reveal .progress { background: var(--gray-200); height: 3px; }
     .reveal .progress span { background: var(--red); }
 
+    .reveal .slide-number {
+      font-size: 12px;
+      color: var(--gray-400);
+      background: rgba(255,255,255,0.85);
+      padding: 4px 12px;
+      border-radius: 12px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* ===== COVER SLIDE ===== */
     .slide-title {
-      background: linear-gradient(135deg, var(--navy) 0%, #003380 100%);
+      background: linear-gradient(135deg, var(--navy) 0%, #001438 50%, var(--navy-light) 100%);
       color: var(--white);
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    .slide-title h1 { color: var(--white); margin-bottom: 20px; }
-    .slide-title h3 { color: rgba(255,255,255,0.8); font-weight: 400; }
-    .slide-title .subtitle { color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 30px; }
-    .slide-title .emblem { font-size: 3em; margin-bottom: 20px; opacity: 0.3; }
+    .slide-title::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(213,43,30,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .slide-title::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .slide-title > * { position: relative; z-index: 1; }
+    .slide-title h1 { color: var(--white); margin-bottom: 16px; }
+    .slide-title h3 { color: rgba(255,255,255,0.75); font-weight: 400; }
+    .slide-title .emblem {
+      font-size: 4em;
+      margin-bottom: 20px;
+      opacity: 0.25;
+      display: inline-block;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .slide-title .subtitle {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85em;
+      margin-top: 30px;
+      line-height: 1.8;
+    }
+    .slide-title .accent-line {
+      width: 80px;
+      height: 3px;
+      background: var(--red);
+      margin: 24px auto;
+      border-radius: 2px;
+    }
+    .slide-title .disclaimer {
+      color: rgba(255,255,255,0.35);
+    }
 
     .red-accent { color: var(--red); }
+    .navy-accent { color: var(--navy); }
 
+    /* ===== SECTION DIVIDER ===== */
+    .section-divider {
+      padding: 0;
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .section-divider h2 { color: var(--white); }
+    .section-divider h2::after { background: var(--red); }
+    .section-divider h3 { color: rgba(255,255,255,0.7); font-weight: 400; }
+
+    /* ===== STATS ===== */
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 15px;
+      gap: 12px;
       margin: 20px 0;
     }
     .stat-card {
-      background: var(--gray-100);
-      border-radius: 8px;
-      padding: 15px;
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px 16px;
       text-align: center;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-200);
       border-top: 3px solid var(--red);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .stat-card .number { font-size: 1.8em; font-weight: 800; color: var(--navy); }
-    .stat-card .label { font-size: 0.7em; color: var(--gray-600); text-transform: uppercase; margin-top: 4px; }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .stat-card .number {
+      font-size: 1.8em;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+    .stat-card .number-small { font-size: 1.2em; }
+    .stat-card .label {
+      font-size: 0.65em;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 6px;
+      font-weight: 600;
+    }
 
+    /* ===== MAP & CHART ===== */
     .map-container {
       width: 100%;
-      height: 500px;
-      border-radius: 8px;
-      border: 2px solid var(--gray-200);
+      height: 480px;
+      border-radius: 12px;
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
     }
-    .chart-container { width: 100%; height: 380px; }
+    .chart-container {
+      width: 100%;
+      height: 380px;
+      background: var(--white);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-200);
+    }
 
     .legend-box {
       display: inline-flex;
@@ -90,24 +225,107 @@
       gap: 8px;
       margin: 0 12px;
       font-size: 0.75em;
+      color: var(--gray-600);
     }
-    .legend-box .swatch { width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
+    .legend-box .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      display: inline-block;
+    }
 
+    /* ===== TWO COLUMN ===== */
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 30px;
+      gap: 24px;
       text-align: left;
     }
+    .two-col > div {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-200);
+    }
 
+    /* ===== LISTS ===== */
+    .reveal ul {
+      list-style: none;
+      padding: 0;
+    }
+    .reveal ul li {
+      padding: 8px 0 8px 24px;
+      position: relative;
+      font-size: 0.85em;
+      line-height: 1.6;
+    }
+    .reveal ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 15px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      opacity: 0.7;
+    }
+
+    /* ===== TABLES ===== */
+    .reveal table {
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .reveal table th {
+      background: var(--navy);
+      color: var(--white);
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .reveal table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--gray-200);
+      font-size: 0.85em;
+    }
+    .reveal table tr:last-child td { border-bottom: none; }
+    .reveal table tr:nth-child(even) td { background: var(--gray-50); }
+    .reveal table tr:hover td { background: #EEF2FF; }
+
+    /* ===== MISC ===== */
     .disclaimer {
       font-size: 0.55em;
       color: var(--gray-600);
       margin-top: 40px;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .reveal section img { border: none; box-shadow: none; }
+
+    .slide-badge {
+      display: inline-block;
+      background: var(--red);
+      color: var(--white);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.7em;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+
+    .insight-icon {
+      font-size: 1.4em;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
 
     /* ==================== HYBRID MODE TOGGLE ==================== */
     .mode-toggle {
@@ -127,7 +345,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      box-shadow: var(--shadow-lg);
       transition: background 0.2s, transform 0.2s;
       line-height: 1.4;
     }
@@ -175,6 +393,10 @@
     body.scroll-mode .reveal .slides section:nth-child(even) {
       background: var(--gray-100);
     }
+    body.scroll-mode .reveal .slides section h2::after {
+      left: 0;
+      transform: none;
+    }
     body.scroll-mode .reveal .controls,
     body.scroll-mode .reveal .progress,
     body.scroll-mode .reveal .slide-number {
@@ -182,12 +404,14 @@
     }
     body.scroll-mode .map-container { height: 500px; }
 
+    /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
       .two-col { grid-template-columns: 1fr; }
-      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
       .reveal h1 { font-size: 2em; }
       .reveal h2 { font-size: 1.5em; }
       .map-container { height: 350px; }
+      body.scroll-mode .reveal .slides section { padding: 40px 20px !important; }
     }
   </style>
 </head>
@@ -200,22 +424,24 @@
   <div class="emblem">&#x1F6F0;</div>
   <h1>Distribusi Air Bersih</h1>
   <h3>PMI Sulawesi Selatan 2023–2024</h3>
-  <p style="margin-top:30px; color:rgba(255,255,255,0.7);">
+  <div class="accent-line"></div>
+  <p style="margin-top:10px; color:rgba(255,255,255,0.65); font-size:0.95em;">
     Analisis Cakupan, Sumber Daya, dan Kerentanan Wilayah
   </p>
   <div class="subtitle">
-    Unit IM Cell — Palang Merah Indonesia<br>
+    Unit IM Cell &mdash; Palang Merah Indonesia<br>
     Data Operasi Kekeringan Sulawesi Selatan
   </div>
-  <div class="disclaimer" style="color:rgba(255,255,255,0.4);">
+  <div class="disclaimer" style="color:rgba(255,255,255,0.35);">
     Bukan dokumen resmi PMI/IFRC. Untuk tujuan pembelajaran.
   </div>
 </section>
 
 <!-- ==================== SLIDE 2: SULSEL OVERVIEW ==================== -->
 <section>
+  <span class="slide-badge">Gambaran Umum</span>
   <h2>Sulawesi Selatan</h2>
-  <h4 style="color:var(--gray-600); font-weight:400;">Gambaran Umum Wilayah Operasi</h4>
+  <h4 style="color:var(--gray-600); font-weight:400;">Wilayah Operasi Tanggap Darurat Kekeringan</h4>
   <div class="stat-grid">
     <div class="stat-card">
       <div class="number">46.717</div>
@@ -262,9 +488,10 @@
 
 <!-- ==================== SLIDE 3: DROUGHT HAZARD MAP ==================== -->
 <section>
+  <span class="slide-badge">Pemetaan</span>
   <h2>Analisis Bahaya Kekeringan</h2>
   <h4 style="color:var(--gray-600); font-weight:400; margin-bottom:15px;">
-    Peta Skenario Bahaya Kekeringan &bull; 24 Kabupaten/Kota
+    24 Kabupaten/Kota &bull; Skenario Bahaya
   </h4>
 
   <div id="drought-map" class="map-container"></div>
@@ -282,7 +509,8 @@
 
 <!-- ==================== SLIDE 4: DISTRIBUTION CHART ==================== -->
 <section>
-  <h2>Distribusi Air Bersih</h2>
+  <span class="slide-badge">Distribusi</span>
+  <h2>Volume Air Bersih</h2>
   <h4 style="color:var(--gray-600); font-weight:400;">Total per Kabupaten/Kota (Liter)</h4>
 
   <div class="chart-container">
@@ -311,7 +539,8 @@
 
 <!-- ==================== SLIDE 5: COVERAGE TABLE ==================== -->
 <section>
-  <h2>Cakupan Wilayah</h2>
+  <span class="slide-badge">Cakupan</span>
+  <h2>Wilayah Terdistribusi</h2>
   <h4 style="color:var(--gray-600); font-weight:400;">Detail per Kabupaten/Kota</h4>
 
   <table style="width:100%; margin-top:15px;">
@@ -335,7 +564,8 @@
 
 <!-- ==================== SLIDE 6: FLEET & RESOURCES ==================== -->
 <section>
-  <h2>Sumber Daya Armada</h2>
+  <span class="slide-badge">Sumber Daya</span>
+  <h2>Armada &amp; Personel</h2>
   <h4 style="color:var(--gray-600); font-weight:400;">Personel &amp; Kendaraan Operasional</h4>
 
   <div class="two-col">
@@ -366,12 +596,13 @@
 
 <!-- ==================== SLIDE 7: INSIGHTS ==================== -->
 <section>
-  <h2>Kesimpulan</h2>
+  <span class="slide-badge">Kesimpulan</span>
+  <h2>Temuan &amp; Rekomendasi</h2>
 
   <div class="two-col" style="margin-top:20px;">
     <div>
-      <h4 style="color:var(--red);">&#x26A0; Temuan Utama</h4>
-      <ul style="font-size:0.8em; line-height:2;">
+      <h4 style="color:var(--red); margin-bottom:12px;"><span class="insight-icon">&#x26A0;</span>Temuan Utama</h4>
+      <ul style="font-size:0.8em;">
         <li><strong>Makassar</strong> dan <strong>Maros</strong> menerima &gt;50% total distribusi</li>
         <li><strong>Jeneponto</strong> cakupan terluas: 9 kecamatan, 215 titik</li>
         <li><strong>Luwu Utara</strong> cakupan minimal: 3 kecamatan, 35.000 liter</li>
@@ -380,8 +611,8 @@
       </ul>
     </div>
     <div>
-      <h4 style="color:var(--navy);">&#x1F4A1; Rekomendasi</h4>
-      <ul style="font-size:0.8em; line-height:2;">
+      <h4 style="color:var(--navy); margin-bottom:12px;"><span class="insight-icon">&#x1F4A1;</span>Rekomendasi</h4>
+      <ul style="font-size:0.8em;">
         <li>Standardisasi format pencatatan distribusi</li>
         <li>Integrasi data armada gudang regional ke rencana operasi</li>
         <li>Overlay peta bahaya + distribusi untuk rencana kontinjensi</li>

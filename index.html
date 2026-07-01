@@ -109,6 +109,79 @@
 
     .reveal section img { border: none; box-shadow: none; }
 
+    /* ==================== HYBRID MODE TOGGLE ==================== */
+    .mode-toggle {
+      position: fixed;
+      z-index: 9999;
+      top: 20px;
+      right: 20px;
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      border-radius: 24px;
+      padding: 8px 16px 8px 12px;
+      font-family: var(--font-body);
+      font-size: 0.8em;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      transition: background 0.2s, transform 0.2s;
+      line-height: 1.4;
+    }
+    .mode-toggle:hover { background: var(--red); transform: scale(1.05); }
+    .mode-toggle-icon { font-size: 1.1em; }
+
+    /* ==================== SCROLL MODE OVERRIDES ==================== */
+    body.scroll-mode { overflow: auto; }
+    body.scroll-mode .reveal {
+      position: relative !important;
+      overflow: visible !important;
+      height: auto !important;
+      width: 100% !important;
+    }
+    body.scroll-mode .reveal .slides {
+      position: relative !important;
+      width: 100% !important;
+      height: auto !important;
+      top: auto !important;
+      left: auto !important;
+      transform: none !important;
+      pointer-events: auto !important;
+    }
+    body.scroll-mode .reveal .slides section {
+      position: relative !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: block !important;
+      transform: none !important;
+      width: 100% !important;
+      height: auto !important;
+      padding: 80px 40px !important;
+      top: auto !important;
+      left: auto !important;
+      overflow: visible !important;
+      z-index: auto !important;
+    }
+    body.scroll-mode .reveal .slides .slide-title {
+      min-height: 100vh;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    body.scroll-mode .reveal .slides section:nth-child(even) {
+      background: var(--gray-100);
+    }
+    body.scroll-mode .reveal .controls,
+    body.scroll-mode .reveal .progress,
+    body.scroll-mode .reveal .slide-number {
+      display: none !important;
+    }
+    body.scroll-mode .map-container { height: 500px; }
+
     @media (max-width: 768px) {
       .two-col { grid-template-columns: 1fr; }
       .stat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -326,6 +399,12 @@
 </div><!-- .slides -->
 </div><!-- .reveal -->
 
+<!-- Hybrid Mode Toggle -->
+<button id="modeToggle" class="mode-toggle" aria-label="Toggle view mode">
+  <span class="mode-toggle-icon">&#x1F4D6;</span>
+  <span class="mode-toggle-text">Mode Halaman</span>
+</button>
+
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -490,8 +569,9 @@ new Chart(document.getElementById('fleetChart'), {
 });
 
 // ======================== LEAFLET MAP ========================
+var sulselMap = null;
 (function() {
-  var map = L.map('drought-map', {
+  sulselMap = L.map('drought-map', {
     center: [-4.5, 120.0],
     zoom: 8,
     minZoom: 7,
@@ -579,6 +659,38 @@ Reveal.initialize({
   height: 700,
   margin: 0.08
 });
+
+// ======================== HYBRID MODE TOGGLE JS ========================
+(function() {
+  var toggleBtn = document.getElementById('modeToggle');
+  var toggleIcon = toggleBtn.querySelector('.mode-toggle-icon');
+  var toggleText = toggleBtn.querySelector('.mode-toggle-text');
+  var isScrollMode = false;
+
+  function refreshVisualizations() {
+    setTimeout(function() {
+      if (sulselMap) sulselMap.invalidateSize();
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
+  }
+
+  toggleBtn.addEventListener('click', function() {
+    isScrollMode = !isScrollMode;
+    document.body.classList.toggle('scroll-mode', isScrollMode);
+
+    if (isScrollMode) {
+      toggleIcon.textContent = '\u{1F3AC}';
+      toggleText.textContent = 'Mode Slide';
+      Reveal.slide(0);
+    } else {
+      toggleIcon.textContent = '\u{1F4D6}';
+      toggleText.textContent = 'Mode Halaman';
+      Reveal.sync();
+    }
+
+    refreshVisualizations();
+  });
+})();
 </script>
 </body>
 </html>

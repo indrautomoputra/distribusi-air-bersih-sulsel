@@ -571,12 +571,13 @@ new Chart(document.getElementById('fleetChart'), {
 // ======================== LEAFLET MAP ========================
 var sulselMap = null;
 (function() {
-  sulselMap = L.map('drought-map', {
+  var map = L.map('drought-map', {
     center: [-4.5, 120.0],
     zoom: 8,
     minZoom: 7,
     maxZoom: 12
   });
+  sulselMap = map;
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors',

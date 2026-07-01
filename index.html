@@ -110,9 +110,9 @@
     .stat-card .label { font-size: 0.55em; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.03em; margin-top: 2px; font-weight: 600; }
 
     /* ===== MAP & CHART ===== */
-    .map-container { width: 100%; height: 360px; border-radius: 6px; border: 1px solid var(--gray-200); overflow: hidden; }
-    .chart-container { width: 100%; height: 260px; background: var(--white); border-radius: 6px; padding: 10px; border: 1px solid var(--gray-200); }
-    .chart-container.tall { height: 300px; }
+    .map-container { width: 100%; height: 280px; border-radius: 6px; border: 1px solid var(--gray-200); overflow: hidden; }
+    .chart-container { width: 100%; height: 200px; background: var(--white); border-radius: 6px; padding: 10px; border: 1px solid var(--gray-200); }
+    .chart-container.tall { height: 240px; }
 
     .legend-box {
       display: inline-flex; align-items: center; gap: 6px; margin: 0 8px;
@@ -195,8 +195,8 @@
       .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
       .reveal h1 { font-size: 1.3em; }
       .reveal h2 { font-size: 1em; }
-      .map-container { height: 280px; }
-      .chart-container { height: 200px; }
+      .map-container { height: 200px; }
+      .chart-container { height: 160px; }
       body.scroll-mode .reveal .slides section { padding: 24px 16px !important; }
     }
   </style>
@@ -229,29 +229,13 @@
     <div class="kpi-item"><div class="num">2.825</div><div class="lbl">Total Petugas</div></div>
     <div class="kpi-item"><div class="num">12</div><div class="lbl">Unit Tangki</div></div>
   </div>
-
-  <div class="two-col" style="margin-top:8px; gap:10px;">
-    <div style="padding:10px;">
-      <div class="section-label">Cakupan Wilayah</div>
-      <table style="width:100%;">
-        <thead>
-          <tr><th>Kab/Kota</th><th>Kec</th><th>Desa</th><th>Titik</th><th>Jiwa</th><th>Liter</th></tr>
-        </thead>
-        <tbody id="summary-tbody"></tbody>
-      </table>
-    </div>
-    <div style="padding:10px;">
-      <div class="section-label">Sumber Daya Armada</div>
-      <table style="width:100%;">
-        <thead>
-          <tr><th>Lokasi</th><th>Petugas</th><th>Tangki</th><th>Pickup</th></tr>
-        </thead>
-        <tbody id="summary-fleet-tbody"></tbody>
-      </table>
-      <div style="margin-top:8px; font-size:0.55em; color:var(--gray-400);">
-        <strong>Gudang Regional Makassar:</strong> 14 unit tangki tambahan
-      </div>
-    </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:8px;">
+    <div class="stat-card"><div class="number" style="font-size:0.9em;">5.562.050 Ha</div><div class="label">Area Terdampak</div></div>
+    <div class="stat-card" style="border-top-color:#DBB53C;"><div class="number" style="font-size:0.9em;">42 Kec</div><div class="label">Tercakup</div></div>
+    <div class="stat-card" style="border-top-color:var(--red);"><div class="number" style="font-size:0.9em;">Kelas Tinggi</div><div class="label">Status Provinsi</div></div>
+  </div>
+  <div style="margin-top:10px; font-size:0.55em; color:var(--gray-400); text-align:center;">
+    Lihat slide berikutnya untuk detail per wilayah &bull; Gudang Regional Makassar: 14 tangki tambahan
   </div>
 </section>
 
@@ -452,29 +436,7 @@ function normalizeKabName(name) {
     .trim();
 }
 
-// ======================== SLIDE 2: SUMMARY TABLES ========================
-(function() {
-  var tbody1 = document.getElementById('summary-tbody');
-  distribusiData.forEach(function(d) {
-    var tr = document.createElement('tr');
-    tr.innerHTML = '<td><strong>' + d.kab + '</strong></td>' +
-      '<td>' + d.kec + '</td>' +
-      '<td>' + d.desa + '</td>' +
-      '<td>' + d.titik.toLocaleString('id-ID') + '</td>' +
-      '<td>' + d.jiwa.toLocaleString('id-ID') + '</td>' +
-      '<td>' + d.liter.toLocaleString('id-ID') + '</td>';
-    tbody1.appendChild(tr);
-  });
-  var tbody2 = document.getElementById('summary-fleet-tbody');
-  sumberDaya.forEach(function(d) {
-    var tr = document.createElement('tr');
-    tr.innerHTML = '<td><strong>' + d.kab + '</strong></td>' +
-      '<td>' + d.petugas + '</td>' +
-      '<td>' + d.tangki + '</td>' +
-      '<td>' + d.pickup + '</td>';
-    tbody2.appendChild(tr);
-  });
-})();
+
 
 // ======================== SLIDE 6: COVERAGE TABLE ========================
 (function() {
@@ -662,9 +624,9 @@ Reveal.initialize({
   hash: true,
   slideNumber: true,
   transition: 'slide',
-  width: 1100,
-  height: 700,
-  margin: 0.08
+  width: 1200,
+  height: 800,
+  margin: 0.04
 });
 
 // ======================== HYBRID MODE TOGGLE JS ========================
